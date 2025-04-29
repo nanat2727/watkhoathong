@@ -1,103 +1,157 @@
-import Image from "next/image";
+'use client';
+
+import { useEffect, useState } from "react";
+import SideMenu from "@/components/SideMenu";
+import NewsCarousel from "@/components/NewsCarousel";
+import YoutubeGallery from "@/components/YoutubeGallery";
+import Link from "next/link";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const teacherImages = [
+    "/images/teachers/teacher1.jpg",
+    "/images/teachers/teacher2.jpg",
+    "/images/teachers/teacher3.jpg",
+    "/images/teachers/teacher4.jpg",
+    "/images/teachers/teacher5.jpg",
+    "/images/teachers/teacher6.jpg",
+    "/images/teachers/teacher7.jpg",
+    "/images/teachers/teacher8.jpg",
+    "/images/teachers/teacher9.jpg",
+    "/images/teachers/teacher10.jpg",
+    "/images/teachers/teacher11.jpg",
+    "/images/teachers/teacher12.jpg",
+    "/images/teachers/teacher13.jpg",
+    "/images/teachers/teacher14.jpg",
+    "/images/teachers/teacher15.jpg",
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [currentImage, setCurrentImage] = useState<string>(teacherImages[0]);
+  const [fade, setFade] = useState<boolean>(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false);
+
+      setTimeout(() => {
+        let newImage;
+        do {
+          newImage = teacherImages[Math.floor(Math.random() * teacherImages.length)];
+        } while (newImage === currentImage);
+
+        setCurrentImage(newImage);
+        setFade(true);
+      }, 300);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [currentImage]);
+
+  return (
+    <div className="flex flex-wrap bg-[url('/school-bg.png')] bg-cover min-h-screen p-4 text-gray-800 leading-tight">
+      {/* ซ้าย */}
+      <aside className="w-full sm:w-1/5 p-4">
+        <SideMenu />
+      </aside>
+
+      {/* กลาง */}
+      <main className="w-full sm:w-3/5 p-2 space-y-6">
+        <NewsCarousel />
+
+        {/* ข่าวประชาสัมพันธ์ */}
+        <div className="bg-white text-white font-bold text-center px-2 py-2 rounded-xl shadow-md border border-blue-800 mb-6 leading-tight">
+          <h3 className="text-xl font-bold mb-6 text-center text-blue-700">ข่าวประชาสัมพันธ์</h3>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            {["pr1.jpg", "pr2.jpg", "pr3.jpg", "pr4.jpg", "pr5.jpg", "pr6.jpg", "pr7.jpg", "pr8.jpg", "pr9.jpg", "pr10.jpg"].map((img, index) => (
+              <div key={index} className="bg-gray-100 rounded-lg overflow-hidden hover:shadow-2xl transition-all duration-300 leading-tight">
+                <Link href={`/announcement-${index + 1}`}>
+                  <img
+                    src={`/images/pressrelease/${img}`}
+                    alt={`ข่าวประชาสัมพันธ์ ${index + 1}`}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="p-2 text-center font-semibold text-gray-700 leading-tight">หัวข้อข่าว {index + 1}</div>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ข่าวทั่วไป */}
+        <div className="bg-white text-white font-bold px-2 py-2 rounded-xl shadow-md border border-blue-800 mb-6 leading-tight">
+          <h3 className="text-lg text-blue-700 font-semibold mb-4 text-center leading-tight">ข่าวทั่วไป</h3>
+          <ul className="space-y-4 leading-tight">
+            <li>
+              <a href="https://www.example.com/news1" className="text-blue-600 hover:underline leading-tight">
+                กิจกรรมต่าง ๆ ในโรงเรียน
+              </a>
+            </li>
+            <li>
+              <a href="https://www.example.com/news2" className="text-blue-600 hover:underline leading-tight">
+                โครงการการเรียนการสอนออนไลน์
+              </a>
+            </li>
+            <li>
+              <a href="https://www.example.com/news3" className="text-blue-600 hover:underline leading-tight">
+                โครงการอาสาสมัครช่วยสังคม
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* ผลงานครู */}
+        <div className="bg-white text-white font-bold text-center px-2 py-2 rounded-xl shadow-md border border-blue-800 mb-6 leading-tight">
+          <h3 className="text-xl font-bold mb-6 text-center text-blue-700">ผลงานครู</h3>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {["teacher1.jpg", "teacher2.jpg", "teacher3.jpg", "teacher4.jpg", "teacher5.jpg"].map((img, index) => (
+              <div key={index} className="bg-gray-100 rounded-lg overflow-hidden hover:shadow-2xl transition-all duration-300 leading-tight">
+                <Link href={`/teacher-works/teacher${index + 1}`}>
+                  <img
+                    src={`/images/teachers/${img}`}
+                    alt={`ผลงานครู ${index + 1}`}
+                    className="w-full h-40 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="p-2 text-center font-semibold text-gray-700 leading-tight">ครูคนที่ {index + 1}</div>
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      {/* ขวา */}
+      <aside className="w-full sm:w-1/5 p-2">
+        <div className="bg-white text-white font-bold text-center px-2 py-2 rounded-xl shadow-md border border-blue-800 mb-6 leading-tight">
+          {/* ผู้บริหาร */}
+          <div className="text-center mb-4 leading-tight">
+            <a href="/administrator-profile">
+              <img
+                src="/images/administrator.jpg"
+                alt="ผู้บริหาร"
+                className="w-full h-auto rounded-lg hover:opacity-90 transition"
+              />
+            </a>
+            <h3 className="text-lg font-semibold leading-tight">นายณัฏฐ์ นนทะเสน</h3>
+            <p className="text-gray-600 leading-tight">ผู้อำนวยการ</p>
+            <p className="text-gray-600 leading-tight">โรงเรียนวัดเขาทอง(ชนปากคลอง)</p>
+            <p className="text-blue-700 italic mt-1 leading-tight">"มุ่งพัฒนาเพื่ออนาคตของลูกหลาน"</p>
+          </div>
+
+          {/* ครูและบุคลากร */}
+          <div className="mb-6 text-center leading-tight">
+            {currentImage && (
+              <img
+                src={currentImage}
+                alt="ครู"
+                className={`w-full h-80 object-cover rounded-lg shadow-md transition-opacity duration-700 ${fade ? "opacity-100" : "opacity-0"}`}
+              />
+            )}
+            <p className="mt-2 text-xlg text-gray-700 font-medium leading-tight">คณะครูและบุคลากร</p>
+          </div>
+
+          {/* วิดีโอยูทูป */}
+          <YoutubeGallery />
+        </div>
+      </aside>
     </div>
   );
 }

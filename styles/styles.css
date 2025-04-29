@@ -1,0 +1,17 @@
+/* styles/styles.css */
+.container {
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  

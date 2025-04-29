@@ -1,0 +1,79 @@
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { Niramit } from 'next/font/google';
+import { FaFacebookSquare, FaLine } from "react-icons/fa"; // ✅ ดึงไอคอนมาใช้
+
+// ✅ ใช้ฟอนต์ Niramit เฉพาะใน Navbar
+const niramit = Niramit({
+  subsets: ['thai', 'latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-niramit',
+});
+
+const navItems = [
+  { label: 'หน้าแรก', href: '/' },
+  { label: 'ดาวน์โหลดเอกสาร', href: '/document' },
+  { label: 'สมัครสมาชิก', href: '/register' },
+  { label: 'แดชบอร์ด', href: '/dashboard' },
+  { label: 'เกี่ยวกับเรา', href: '/about' },
+];
+
+export default function Navbar() {
+  const pathname = usePathname();
+
+  return (
+    <nav className={`${niramit.variable} font-[var(--font-niramit)] bg-blue-800 backdrop-blur-md text-white shadow-md px-6 py-3`}>
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* โลโก้ */}
+        <Link href="/" className="flex items-center space-x-3">
+          <Image src="/logo.png" alt="โลโก้โรงเรียน" width={40} height={40} />
+          <span className="text-xl font-bold text-yellow-300">MIS | โรงเรียนวัดเขาทอง(ชนปากคลอง)</span>
+        </Link>
+
+        {/* เมนู และไอคอน */}
+        <div className="flex items-center space-x-4">
+          {/* เมนูหลัก */}
+          {navItems.map(({ label, href }) => {
+            const isActive = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`px-4 py-2 rounded-md transition-all font-medium ${
+                  isActive
+                    ? 'bg-yellow-400 text-blue-900 shadow-inner'
+                    : 'hover:bg-blue-600'
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
+
+          {/* ไอคอน Social */}
+          <div className="flex items-center space-x-3 ml-4">
+            <a
+              href="https://www.facebook.com/watkhaothong" // <-- เปลี่ยนเป็นลิงก์เพจจริง
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white text-2xl hover:text-yellow-300 transition-transform hover:scale-110"
+            >
+              <FaFacebookSquare />
+            </a>
+            <a
+              href="https://line.me/ti/p/nanat2727" // <-- เปลี่ยนเป็นลิงก์ไลน์จริง
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white text-2xl hover:text-green-400 transition-transform hover:scale-110"
+            >
+              <FaLine />
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}

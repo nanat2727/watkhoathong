@@ -1,0 +1,18 @@
+.cursor {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease-in-out, border-width 0.1s ease-in-out;
+    opacity: 0; /* ทำให้เคอร์เซอร์เริ่มต้นซ่อน */
+}
+
+.cursor-hover {
+    transform: translate(-30%, -30%) scale(2); /* ขยายขนาดเคอร์เซอร์ */
+    border-width: 3px;
+    border-color: #f9cc03;
+    opacity: 1; /* ทำให้เคอร์เซอร์แสดง */
+}
